@@ -5,7 +5,7 @@ import random
 from typing import List, Tuple
 class Back_Test:
     def __init__(self, symbol):
-        self.baseutils = Baseutils() #if you want to specify start and end date put here.
+        self.baseutils = Baseutils() #if you want to specify start and end date put them here.
         self.dataframe:pd.DataFrame = self.baseutils.fetch_DataFrame(symbol)
         self.prices : pd.DataFrame = self.dataframe["Close"]
     
