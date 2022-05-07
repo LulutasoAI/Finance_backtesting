@@ -2,6 +2,8 @@ from utilities import Baseutils
 from back_testing_center import Back_Test
 from matplotlib import pyplot as plt
 import numpy as np
+import pandas as pd
+
 class Test:
     def __init__(self) -> None:
         pass
@@ -29,18 +31,36 @@ class Test:
 
     def Back_Test_test(self):
         
-        backtest = Back_Test("TM")
-        last = 100
+        backtest = Back_Test("^N225")
+        last = 30
         returns = backtest.make_returns()
         print(returns)
         strategy = backtest.make_random_positions()
         profit = returns.shift(1)*strategy
-        plt.plot(returns[-last:])
-        plt.plot(profit[-last:])
-        plt.show()
-        print(backtest.prices[0]*np.sum(returns),"normal")
-        print(10000*np.sum(profit),"strat")
-        return True
+        data = pd.DataFrame()
+        #data["prices"] = backtest.prices[-last:]
+        ##data["returns"] = returns[-last:]
+        ##data["profit"] = profit[-last:]
+        #data["position"] = strategy[-last:]
+        #plt.plot(returns[-last:])
+        #plt.plot(profit[-last:])
+        
+        #plt.plot(strategy[-last:])
+        #plt.show()
+        #ax = data.plot(secondary_y="Position",figsize=(10,6))
+        #ax.get_legend().set_bbox_to_anchor((0.25,0.85))
+        #ax.figure.show()
+        theoretical_latest = backtest.prices[0]*np.exp(np.sum(returns))
+        the_latest = backtest.prices[-1]
+        print(backtest.prices[0],"first price")
+        print(theoretical_latest,"hold")
+        print(the_latest,"the latest price")
+        print(10000*np.exp(np.sum(profit)),"strat")
+        if round(theoretical_latest,2) == round(the_latest,2):
+            print("logged return test ok")
+            return True
+        else:
+            return False
 
 if __name__ == "__main__":
     Test().test_main()
